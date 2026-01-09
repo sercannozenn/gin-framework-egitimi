@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:15
+    container_name: ders-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: lesson_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  mysql-db:
+    image: mysql:8
+    container_name: ders-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: lesson_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8090:8080"
+    depends_on:
+      - postgres-db
+      - mysql-db
+
+volumes:
+  postgres_data:
+  mysql_data:
